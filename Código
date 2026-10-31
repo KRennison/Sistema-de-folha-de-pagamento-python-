@@ -1,0 +1,67 @@
+class Funcionario:
+    def __init__(self, nome, salario_base):
+        self.nome = nome
+        self.salario_base = salario_base
+
+    def calcular_salario(self):
+        pass
+
+    def __str__(self):
+        return self.nome
+
+
+class Gerente(Funcionario):
+    def __init__(self, nome, salario_base, bonus):
+        super().__init__(nome, salario_base)
+        self.bonus = bonus
+
+    def calcular_salario(self):
+        return self.salario_base + self.bonus
+
+
+class Vendedor(Funcionario):
+    def __init__(self, nome, salario_base, vendas):
+        super().__init__(nome, salario_base)
+        self.vendas = vendas
+
+    def calcular_salario(self):
+        return self.salario_base + (self.vendas * 0.05)
+
+
+class VendedorSenior(Vendedor):
+    def calcular_salario(self):
+        return self.salario_base + (self.vendas * 0.08)
+
+
+class Estagiario(Funcionario):
+    def calcular_salario(self):
+        return self.salario_base
+
+
+def total_folha(lista):
+    total = 0
+
+    for funcionario in lista:
+        total += funcionario.calcular_salario()
+
+    return total
+
+
+ana = Gerente("Ana", 8000, 2000)
+bruno = Vendedor("Bruno", 3000, 40000)
+carla = VendedorSenior("Carla", 3500, 40000)
+davi = Estagiario("Davi", 1500)
+
+funcionarios = [ana, bruno, carla, davi]
+
+for funcionario in funcionarios:
+    print(funcionario.nome, funcionario.__class__.__name__,
+          "R$", format(funcionario.calcular_salario(), ".2f"))
+
+print("\nTotal da folha: R$", format(total_folha(funcionarios), ".2f"))
+
+print("\nComissionados:")
+
+for funcionario in funcionarios:
+    if isinstance(funcionario, Vendedor):
+        print(funcionario.nome, end=" ")
